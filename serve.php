@@ -43,7 +43,7 @@ function sendMessage($senderID, $receiverIDs, $content, $method)
 			}
 		}else
 		{
-			fail('Fail to send message!');
+			fail('Psalms 19:2(KJV) "Day unto day uttereth speech, and night unto night sheweth knowledge."');
 		}
 	});
 }

@@ -4,6 +4,9 @@ require_once('account.php');
 require_once('pray.php');
 require_once('push.php');
 require_once('serve.php');
+require_once('feedback.php');
+require_once('resources.php');
+require_once('sermon.php');
 
 function validateMessage($action, $messageID, $messageHash)
 {
@@ -35,6 +38,11 @@ function dispatchMessage()
 			loginUser($arguments['email'], $arguments['password'], $messageID);
 			break;
 		}
+		case 'get_team_members':
+		{
+			getTeamMembers($arguments['team_id'], $messageID);
+			break;
+		}
 		case 'register_device':
 		{
 			$deviceID = $arguments['device_id'];
@@ -48,8 +56,9 @@ function dispatchMessage()
 		{
 			$deviceID = $arguments['device_id'];
 			$content = $arguments['content'];
+			$title = $arguments['title'];
 			
-			addNewPray($deviceID, $content, $messageID);
+			addNewPray($deviceID, $title, $content, $messageID);
 			break;
 		}
 		case 'fetch_pray':
@@ -74,6 +83,31 @@ function dispatchMessage()
 			$lastUpdate = $arguments['last_update'];
 			
 			fetchMessage($receiverID, $lastUpdate, $messageID);
+			break;
+		}
+		case 'feedback':
+		{
+			feedback($arguments['device_id'], $arguments['content'], $messageID);
+			break;
+		}
+		case 'fetch_resource_category':
+		{
+			fetchResourceCategories($arguments['last_update'], $messageID);
+			break;
+		}
+		case 'fetch_resource':
+		{
+			fetchResourceInCategory($arguments['category_id'], $arguments['last_update'], $messageID);
+			break;
+		}
+		case 'fetch_sermon_category':
+		{
+			fetchSermonCategories($arguments['last_update'], $messageID);
+			break;
+		}
+		case 'fetch_sermon':
+		{
+			fetchSermonInCategory($arguments['category_id'], $arguments['last_update'], $messageID);
 			break;
 		}
 		default:

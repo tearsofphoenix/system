@@ -28,10 +28,10 @@ function loginUser($email, $password, $messageID)
 								if ($teamID)
 								{
 									$dbManager->runQuery("select * from team where uuid='$teamID'", 
-														function($dbManager, $innerResult, $context) use($line)
+														function($dbManager, $innerResult, $context) use($line, $messageID)
 														{
 															$teamInfo = mysql_fetch_array($innerResult, MYSQL_ASSOC);
-															__formatAccountResult($line, $teamInfo);
+															__formatAccountResult($line, $teamInfo, $messageID);
 														});
 								}else
 								{
@@ -39,7 +39,7 @@ function loginUser($email, $password, $messageID)
 								}
 							}else
 							{
-								fail('failed to login!', $messageID);
+								fail("Luke 11:10 (KJV) '...and to him that knocketh it shall be opened.'", $messageID);
 							}
 						});
 }
@@ -86,11 +86,27 @@ function registerDevice($deviceID, $deviceToken, $properties, $messageID)
 													   		success(null, $messageID);
 													   }else
 													   {
-													   		fail('Fail to register device.', $messageID);
+													   		fail("John 14:3(KJV) '...I will come again, and receive you unto myself...'", $messageID);
 													   }
 												   });
 							}	
 						}, array($deviceID, $deviceToken, $properties));
+}
+
+function getTeamMembers($teamID, $messageID)
+{
+	$dbManager = DBManager::manager();
+	$dbManager->runQuery("select * from account where team_id='$teamID'", 
+	function($dbManager, $result, $context) use($messageID)
+	{
+		$data = array();
+		while($iLooper = mysql_fetch_array($result, MYSQL_ASSOC))
+		{
+			array_push($data, $iLooper);
+		}
+		
+		success($data, $messageID);
+	});	
 }
 
 ?>

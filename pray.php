@@ -2,10 +2,12 @@
 
 require_once('database.php');
 
-function addNewPray($deviceID, $content, $messageID)
+function addNewPray($deviceID, $title, $content, $messageID)
 {
+	$uuid = UUID::v4();
 	$dbManager = DBManager::manager();
-	$dbManager->runQuery("insert into pray(device_id, content) values('$deviceID', '$content')",
+	$dbManager->runQuery("insert into pray(uuid, device_id, title, content)"
+					   . " values('$uuid', '$deviceID', '$title', '$content')",
 	function($dbManager, $result, $context) use($messageID)
 	{
 		if (mysql_error() == '')
@@ -13,7 +15,7 @@ function addNewPray($deviceID, $content, $messageID)
 			success(null, $messageID);
 		}else
 		{
-			fail('Failed to add pray!', $messageID);
+			fail('Daniel 10:12(KJV) "...thy words were heard, and I am come for thy words."', $messageID);
 		}
 	});
 }
